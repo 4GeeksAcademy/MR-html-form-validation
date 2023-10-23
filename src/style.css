@@ -1,1 +1,14 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
+textarea {
+  width: 100%;
+  height: 50px;
+  border-color: lightgray;
+  margin: 0%;
+  padding: 0%;
+}
+#dangerous {
+  font-weight: bold;
+}
+#notes {
+  color: gray;
+}

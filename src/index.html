@@ -12,7 +12,7 @@
 
 <body>
     <div class="container-fluid col-10 g-0 rounded border border-lightgray my-5">
-        <form>
+        <form id="paymentform" >
 
 
             <div class="col-12">
@@ -49,6 +49,7 @@
                     <label for="city#" class="form-label">City</label>
                     <input type="text" class="form-control" id="city">
                 </div>
+
                 <div class="col-3 align-self-center my-1 ">
                     <label for="inputState" class="form-label">State</label>
                     <select id="inputState" class="form-select">
@@ -56,19 +57,25 @@
                         <option>...</option>
                     </select>
                 </div>
+
                 <div class="col-3 my-1 me-5">
                     <label for="postalcode" class="form-label">Postal Code</label>
                     <input type="number" class="form-control" id="postalcode">
                 </div>
+
                 <div class="col-5 my-1 ms-5">
                     <p class="text-start">We accept:</p>
                 </div>
+
+
                 <div class="col-6 my-1 me-5">
                     <label class="form-check-label" for="textarea">Message</label>
                 </div>
+
+
                 <div class="col-3 text-center my-1 ms-5">
                     <div class="bg-secondary px-0 rounded py-2">
-                        <div class="form-check form-check-inline">
+                        <div class="form-check form-check-inline" id="paymentmethod">
                             <input class="form-check-input" type="radio" name="paymentmethod" id="paymentmethod1"
                                 value="option1">
                             <label class="form-check-label" for="paymentmethod1"><i
@@ -94,6 +101,8 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="col-2 my-1"></div>
                 <div class=" col-6 my-1">
                     <textarea name="message" id="message" cols="30" rows="10" class="rounded"></textarea>
@@ -102,12 +111,58 @@
                 <div class="col-12">
                     <div class="gap-2 d-md-flex justify-content-md-end  bg-light mt-1 border-top rounded-bottom p-3">
                         <button class="btn btn-secondary me-2 " type="button">Cancel</button>
-                        <button class="btn btn-success me-5" type="button">Send</button>
+                        <button class="btn btn-success me-5" type="submit">Send</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </body>
+<script>
+    const form = document.getElementById("paymentform");
+    
+    function validateField(field) {
+        if (field.value.trim() === '') {
+            return false;
+        }
+        return true;
+    }
 
+    function validateForm() {
+        let isValid = true;
+
+        const fields = [
+            document.getElementById("Card#"),
+            document.getElementById("CVC#"),
+            document.getElementById("amount"),
+            document.getElementById("FirstName#"),
+            document.getElementById("LastName#"),
+            document.getElementById("city"),
+            document.getElementById("inputState"),
+            document.getElementById("postalcode"),
+            document.getElementById("state"),
+        ];
+
+
+        fields.forEach(field => {
+            if (!validateField(field)) {
+                isValid = false;
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        return isValid;
+    }
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (validateForm()) {
+            console.log("Formulario enviado con éxito");
+            form.submit();
+        } else {
+            console.log("Hay errores en el formulario");
+        }
+    });
+</script>
 </html>

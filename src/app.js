@@ -1,26 +1,60 @@
-/* eslint-disable */
-import "bootstrap";
-import "./style.css";
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("paymentform");
+  const errorDiv = document.getElementById("errorDiv");
+  const fields = [
+    document.getElementById("Card#"),
+    document.getElementById("CVC#"),
+    document.getElementById("amount"),
+    document.getElementById("FirstName#"),
+    document.getElementById("LastName#"),
+    document.getElementById("city"),
+    document.getElementById("postalcode"),
+    document.getElementById("inputState"),
+    document.getElementById("paymentmethod"),
+    document.getElementById("message"),
+  ];
+  function paymentMethodVerification() {
+    const paymentMethods = document.querySelectorAll(
+      'input[name="paymentmethod"]'
+    );
+    return Array.from(paymentMethods).some((method) => method.checked);
+  }
+  function validateField(field) {
+    if (field.tagName === "SELECT") {
+      return field.value !== "Choose...";
+    } else if (field.type === "radio") {
+      return paymentMethodVerification();
+    } else {
+      return field.value.trim() !== "";
+    }
+  }
 
-import "./assets/img/rigo-baby.jpg";
-import "./assets/img/4geeks.ico";
-import { validate } from "webpack";
-const card = document.getElementById("Card#");
-const CVC = document.getElementById("CVC#");
-const amount = document.getElementById("amount");
-const firstname = document.getElementById("FirstName#");
-const lastname = document.getElementById("LastName#");
-const city = document.getElementById("city");
-const inputstate = document.getElementById("inputState");
-const postalcode = document.getElementById("postalcode");
-const paymentmethod = document.getElementById("paymentmethod");
-const message = document.getElementById("message");
+  function validateForm() {
+    let isValid = true;
 
-const Sendbutton = document.getElementById("Sendbutton");
+    fields.forEach((field) => {
+      const isFieldValid = validateField(field);
 
-form.addEventListener("submit", function(e) {
-  e.preventDefault();
-  validateInputs();
+      if (!isFieldValid) {
+        isValid = false;
+        field.classList.add("bg-danger-subtle", "text-danger", "text-bold");
+      } else {
+        field.classList.remove("bg-danger-subtle", "text-danger", "text-bold");
+      }
+    });
+
+    errorDiv.style.display = isValid ? "none" : "block";
+
+    return isValid;
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      console.log("Formulario enviado con éxito");
+      form.reset();
+    } else {
+      console.log("Hay errores en el formulario");
+    }
+  });
 });
-
-const validateInputs = () => {};

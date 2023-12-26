@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("paymentform");
   const errorDiv = document.getElementById("errorDiv");
+  errorDiv.style.display = "none";
   const fields = [
     document.getElementById("Card#"),
     document.getElementById("CVC#"),
@@ -10,15 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("city"),
     document.getElementById("postalcode"),
     document.getElementById("inputState"),
-    document.getElementById("paymentmethod"),
     document.getElementById("message"),
   ];
+
   function paymentMethodVerification() {
     const paymentMethods = document.querySelectorAll(
       'input[name="paymentmethod"]'
     );
     return Array.from(paymentMethods).some((method) => method.checked);
   }
+
   function validateField(field) {
     if (field.tagName === "SELECT") {
       return field.value !== "Choose...";
@@ -33,8 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let isValid = true;
 
     fields.forEach((field) => {
-      const isFieldValid = validateField(field);
-
+      const isFieldValid =
+        field.type === "radio"
+          ? paymentMethodVerification()
+          : validateField(field);
       if (!isFieldValid) {
         isValid = false;
         field.classList.add("bg-danger-subtle", "text-danger", "text-bold");
